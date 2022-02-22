@@ -36,7 +36,7 @@ class JitsiMeetingListener {
       this.genericListeners});
 }
 
-/// Generic listener
+/// Generic listeners
 class JitsiGenericListener {
   final String eventName;
   final Function(dynamic message) callback;
