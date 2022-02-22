@@ -104,7 +104,7 @@ class JitsiMeetPluginActivity : JitsiMeetActivity() {
         // add Button to LinearLayout
         chatButton.setOnClickListener {view ->
             val map = mutableMapOf<String, Any>()
-            JitsiMeetEventStreamHandler.instance.ChatEvent(map);
+            JitsiMeetEventStreamHandler.instance.onChatEvent(map);
         }
         val view = this.jitsiView
         view.addView(chatButton)
