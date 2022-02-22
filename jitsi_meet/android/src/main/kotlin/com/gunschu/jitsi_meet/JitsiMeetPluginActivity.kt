@@ -10,13 +10,16 @@ import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.view.WindowManager
 import android.widget.Button
 import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import com.gunschu.jitsi_meet.JitsiMeetPlugin.Companion.JITSI_MEETING_CLOSE
 import com.gunschu.jitsi_meet.JitsiMeetPlugin.Companion.JITSI_PLUGIN_TAG
 import org.jitsi.meet.sdk.JitsiMeetActivity
 import org.jitsi.meet.sdk.JitsiMeetConferenceOptions
+import android.util.DisplayMetrics
 
 /**
  * Activity extending JitsiMeetActivity in order to override the conference events
@@ -100,8 +103,18 @@ class JitsiMeetPluginActivity : JitsiMeetActivity() {
             LinearLayout.LayoutParams.WRAP_CONTENT
         )
         chatButton.text = "Chat"
-        chatButton.setBackgroundColor(Color.GREEN)
+        chatButton.setBackgroundColor(Color.rgb(211, 211, 211));
+        chatButton.height=150
+        chatButton.width=200
+        chatButton.setTextColor(Color.WHITE)
         // add Button to LinearLayout
+        val displayMetrics = DisplayMetrics()
+        windowManager.defaultDisplay.getMetrics(displayMetrics)
+        val width = displayMetrics.widthPixels.toFloat()
+        val height = displayMetrics.heightPixels.toFloat()
+        chatButton.setX((width/1.2).toFloat())
+        chatButton.setY(height/7)
+        chatButton.setPadding(5,5,5,5)
         chatButton.setOnClickListener {view ->
             val map = mutableMapOf<String, Any>()
             JitsiMeetEventStreamHandler.instance.onChatEvent(map);
