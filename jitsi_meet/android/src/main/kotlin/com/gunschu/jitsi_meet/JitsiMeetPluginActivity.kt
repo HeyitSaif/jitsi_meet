@@ -9,6 +9,7 @@ import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.util.Log
 import android.view.WindowManager
 import android.widget.Button
@@ -100,14 +101,27 @@ class JitsiMeetPluginActivity : JitsiMeetActivity() {
             LinearLayout.LayoutParams.WRAP_CONTENT
         )
         chatButton.text = "Chat"
-        chatButton.setBackgroundColor(Color.GREEN)
+        chatButton.setBackgroundColor(Color.rgb(211, 211, 211));
+        chatButton.height=150
+        chatButton.width=200
+        chatButton.setTextColor(Color.WHITE)
         // add Button to LinearLayout
+        val displayMetrics = DisplayMetrics()
+        windowManager.defaultDisplay.getMetrics(displayMetrics)
+        val width = displayMetrics.widthPixels.toFloat()
+        val height = displayMetrics.heightPixels.toFloat()
+        chatButton.setX((width/1.2).toFloat())
+        chatButton.setY(height/7)
+        chatButton.setPadding(5,5,5,5)
+        // add Button to LinearLayout
+        val ParentVieew = this.jitsiView
+
         chatButton.setOnClickListener {view ->
             val map = mutableMapOf<String, Any>()
+            ParentVieew.enterPictureInPicture()
             JitsiMeetEventStreamHandler.instance.onChatEvent(map);
         }
-        val view = this.jitsiView
-        view.addView(chatButton)
+        ParentVieew.addView(chatButton)
         turnScreenOnAndKeyguardOff();
     }
 
