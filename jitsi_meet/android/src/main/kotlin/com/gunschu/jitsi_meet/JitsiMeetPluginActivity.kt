@@ -6,10 +6,13 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.res.Configuration
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.WindowManager
+import android.widget.Button
+import android.widget.LinearLayout
 import com.gunschu.jitsi_meet.JitsiMeetPlugin.Companion.JITSI_MEETING_CLOSE
 import com.gunschu.jitsi_meet.JitsiMeetPlugin.Companion.JITSI_PLUGIN_TAG
 import org.jitsi.meet.sdk.JitsiMeetActivity
@@ -90,6 +93,21 @@ class JitsiMeetPluginActivity : JitsiMeetActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val chatButton = Button(this)
+        // setting layout_width and layout_height using layout parameters
+        chatButton.layoutParams = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        )
+        chatButton.text = "Chat"
+        chatButton.setBackgroundColor(Color.GREEN)
+        // add Button to LinearLayout
+        chatButton.setOnClickListener {view ->
+            val map = mutableMapOf<String, Any>()
+            JitsiMeetEventStreamHandler.instance.ChatEvent(map);
+        }
+        val view = this.jitsiView
+        view.addView(chatButton)
         turnScreenOnAndKeyguardOff();
     }
 
