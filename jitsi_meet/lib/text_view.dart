@@ -7,8 +7,8 @@ typedef void TextViewCreatedCallback(TextViewController controller);
 
 class TextView extends StatefulWidget {
   const TextView({
-    Key key,
-    this.onTextViewCreated,
+    Key? key,
+    required this.onTextViewCreated,
   }) : super(key: key);
 
   final TextViewCreatedCallback onTextViewCreated;
