@@ -34,14 +34,15 @@ public class JitsiMeetPlugin() : FlutterPlugin, MethodCallHandler, ActivityAware
     constructor(activity: Activity) : this() {
         this.activity = activity
     }
-
     /**
      * FlutterPlugin interface implementations
      */
     override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         channel = MethodChannel(flutterPluginBinding.binaryMessenger, JITSI_METHOD_CHANNEL)
         channel.setMethodCallHandler(this)
-
+        flutterPluginBinding
+            .platformViewRegistry
+            .registerViewFactory("jitsi_meet/jitsiview", TextViewFactory(this.activity, this, flutterPluginBinding.binaryMessenger))
         eventChannel = EventChannel(flutterPluginBinding.binaryMessenger, JITSI_EVENT_CHANNEL)
         eventChannel.setStreamHandler(JitsiMeetEventStreamHandler.instance)
     }
@@ -156,6 +157,54 @@ public class JitsiMeetPlugin() : FlutterPlugin, MethodCallHandler, ActivityAware
 
         JitsiMeetPluginActivity.launchActivity(activity, options)
         result.success("Successfully joined room: $room")
+    }
+    public fun Test() {
+        val room = "room"
+
+
+        Log.d(JITSI_PLUGIN_TAG, "Joining Room: $room")
+
+        val userInfo = JitsiMeetUserInfo()
+        userInfo.displayName = "saif"
+        userInfo.email = "test@test.com"
+
+
+        var serverURLString = "https://meet.jit.si";
+
+        val serverURL = URL(serverURLString)
+        Log.d(JITSI_PLUGIN_TAG, "Server URL: $serverURL, $serverURLString")
+
+        val optionsBuilder = JitsiMeetConferenceOptions.Builder()
+
+        // Set meeting options
+        optionsBuilder
+                .setServerURL(serverURL)
+                .setRoom(room)
+                .setSubject("subject")
+                .setToken("token")
+                .setAudioMuted(true)
+                .setAudioOnly(true)
+                .setVideoMuted(true)
+                .setUserInfo(userInfo)
+
+        // Add feature flags into options, reading given Map
+//        if (call.argument<HashMap<String, Any>?>("featureFlags") != null) {
+//            val featureFlags = call.argument<HashMap<String, Any>>("featureFlags")
+//            featureFlags!!.forEach { (key, value) ->
+//                if (value is Boolean) {
+//                    val boolVal = value.toString().toBoolean()
+//                    optionsBuilder.setFeatureFlag(key, boolVal)
+//                } else {
+//                    val intVal = value.toString().toInt()
+//                    optionsBuilder.setFeatureFlag(key, intVal)
+//                }
+//            }
+//        }
+
+        // Build with meeting options and feature flags
+        val options = optionsBuilder.build()
+//        JitsiMeetPluginActivity.launchActivity(activity, options)
+//        result.success("Successfully joined room: $room")
     }
 
     private fun closeMeeting(call: MethodCall, result: Result) {

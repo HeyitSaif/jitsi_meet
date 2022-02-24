@@ -22,7 +22,7 @@ class _TextViewState extends State<TextView> {
   Widget build(BuildContext context) {
     if (defaultTargetPlatform == TargetPlatform.android) {
       return AndroidView(
-        viewType: 'plugins.gunschu.jitsi_meet/textview',
+        viewType: 'jitsi_meet/textview',
         onPlatformViewCreated: _onPlatformViewCreated,
       );
     }
@@ -40,7 +40,7 @@ class _TextViewState extends State<TextView> {
 
 class TextViewController {
   TextViewController._(int id)
-      : _channel = new MethodChannel('plugins.gunschu.jitsi_meet/textview_$id');
+      : _channel = new MethodChannel('jitsi_meet/textview_$id');
 
   final MethodChannel _channel;
 
