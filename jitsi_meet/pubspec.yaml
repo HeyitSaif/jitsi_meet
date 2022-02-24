@@ -16,10 +16,12 @@ dependencies:
     git:
       url: https://github.com/HeyitSaif/jitsi_meet
       path: jitsi_meet_web_plugin
+      ref: dev_usama
   jitsi_meet_platform_interface:
     git:
       url: https://github.com/HeyitSaif/jitsi_meet
       path: jitsi_meet_platform_interface
+      ref: dev_usama
 
 dev_dependencies:
   flutter_test:
