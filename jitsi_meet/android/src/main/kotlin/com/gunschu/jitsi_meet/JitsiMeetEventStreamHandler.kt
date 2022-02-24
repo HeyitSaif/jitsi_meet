@@ -31,12 +31,6 @@ class JitsiMeetEventStreamHandler private constructor(): EventChannel.StreamHand
         eventSink?.success(data)
     }
 
-    fun onChatEvent(data: MutableMap<String, Any>?) {
-        Log.d(JITSI_PLUGIN_TAG, "onChatEvent")
-        data?.put("event", "onChatEvent")
-        eventSink?.success(data)
-    }
-
     fun onConferenceJoined(data: MutableMap<String, Any>?) {
         Log.d(JITSI_PLUGIN_TAG, "JitsiMeetEventStreamHandler.onConferenceJoined")
         data?.put("event", "onConferenceJoined")

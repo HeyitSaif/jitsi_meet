@@ -1,21 +1,23 @@
 package com.gunschu.jitsi_meet
 
 import android.app.Activity
+import android.app.Fragment
 import android.content.Intent
 import android.util.Log
 import androidx.annotation.NonNull
-import io.flutter.embedding.engine.plugins.FlutterPlugin
+import com.gunschu.jitsi_meet.JitsiMeetPlugin.Companion.JITSI_PLUGIN_TAG
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
+import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.EventChannel
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 import io.flutter.plugin.common.PluginRegistry.Registrar
+import java.net.URL
 import org.jitsi.meet.sdk.JitsiMeetConferenceOptions
 import org.jitsi.meet.sdk.JitsiMeetUserInfo
-import java.net.URL
 
 
 /** JitsiMeetPlugin */
@@ -30,6 +32,7 @@ public class JitsiMeetPlugin() : FlutterPlugin, MethodCallHandler, ActivityAware
     private lateinit var eventChannel: EventChannel
 
     private var activity: Activity? = null
+    private lateinit var pluginBinding: FlutterPlugin.FlutterPluginBinding
 
     constructor(activity: Activity) : this() {
         this.activity = activity
@@ -39,6 +42,12 @@ public class JitsiMeetPlugin() : FlutterPlugin, MethodCallHandler, ActivityAware
      * FlutterPlugin interface implementations
      */
     override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
+        Log.d(JITSI_PLUGIN_TAG, "Engine")
+
+        pluginBinding = flutterPluginBinding;
+
+        flutterPluginBinding
+
         channel = MethodChannel(flutterPluginBinding.binaryMessenger, JITSI_METHOD_CHANNEL)
         channel.setMethodCallHandler(this)
 
@@ -63,6 +72,7 @@ public class JitsiMeetPlugin() : FlutterPlugin, MethodCallHandler, ActivityAware
     companion object {
         @JvmStatic
         fun registerWith(registrar: Registrar) {
+            Log.d(JITSI_PLUGIN_TAG, "Register with")
             val plugin = JitsiMeetPlugin(registrar.activity())
             val channel = MethodChannel(registrar.messenger(), JITSI_METHOD_CHANNEL)
             channel.setMethodCallHandler(plugin)
@@ -176,7 +186,12 @@ public class JitsiMeetPlugin() : FlutterPlugin, MethodCallHandler, ActivityAware
     }
 
     override fun onAttachedToActivity(binding: ActivityPluginBinding) {
+        Log.d(JITSI_PLUGIN_TAG, "Activity")
         this.activity = binding.activity
+
+        pluginBinding
+            .platformViewRegistry
+            .registerViewFactory("jitsi", NativeViewFactory(binding.activity))
     }
 
     override fun onDetachedFromActivityForConfigChanges() {
