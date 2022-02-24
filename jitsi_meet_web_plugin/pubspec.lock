@@ -69,8 +69,8 @@ packages:
     dependency: "direct main"
     description:
       path: jitsi_meet_platform_interface
-      ref: HEAD
-      resolved-ref: "82b0b3e32a0b2de6591b6e1d0dbfbc6d928d87c6"
+      ref: dev_usama
+      resolved-ref: "5224fdb8b5c77806ec328d884eb2eb423435b540"
       url: "https://github.com/HeyitSaif/jitsi_meet"
     source: git
     version: "2.0.0"
