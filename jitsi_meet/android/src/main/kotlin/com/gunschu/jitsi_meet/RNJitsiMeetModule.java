@@ -1,4 +1,4 @@
-package com.reactnativejitsimeet;
+package com.gunschu.jitsi_meet;
 
 import android.util.Log;
 import java.net.URL;

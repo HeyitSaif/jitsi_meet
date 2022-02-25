@@ -1,4 +1,4 @@
-package com.reactnativejitsimeet;
+package com.gunschu.jitsi_meet;
 
 import android.os.Bundle;
 import android.os.Parcel;

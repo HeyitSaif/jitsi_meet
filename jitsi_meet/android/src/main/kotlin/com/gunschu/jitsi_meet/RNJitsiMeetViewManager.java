@@ -1,4 +1,4 @@
-package com.reactnativejitsimeet;
+package com.gunschu.jitsi_meet;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactApplicationContext;
