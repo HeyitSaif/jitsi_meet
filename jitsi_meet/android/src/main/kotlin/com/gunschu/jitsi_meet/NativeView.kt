@@ -31,6 +31,6 @@ internal class NativeView(activity: Activity, context: Context, id: Int, creatio
         val view = JitsiMeetView(activity)
         view.join(options)
 
-        jitsiView = View(activity).addview
+        jitsiView = view
     }
 }
