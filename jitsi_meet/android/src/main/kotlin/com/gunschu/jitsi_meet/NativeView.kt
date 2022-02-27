@@ -16,8 +16,10 @@ internal class NativeView(activity: Activity, context: Context, id: Int, creatio
         return jitsiView
     }
 
-    override fun dispose() {}
-
+    override fun dispose() {
+        jitsiView.leave()
+    }
+    
     init {
         val userInfo = RNJitsiMeetUserInfo()
         userInfo.displayName = "John"
