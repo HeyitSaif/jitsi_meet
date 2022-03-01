@@ -32,7 +32,7 @@ internal class NativeView(activity: Activity, context: Context, id: Int, creatio
         val optionsBuilder = RNJitsiMeetConferenceOptions.Builder()
         val audioMuted: Boolean = true
         val videoMuted: Boolean = true
-        val featureFlags = creationParams?.get("featureFlags")
+        val featureFlags : HashMap<String, Boolean> = creationParams?.get("featureFlags") as HashMap<String, Boolean>
 
         optionsBuilder
             .setServerURL(URL("https://meet.jit.si"))
@@ -41,12 +41,12 @@ internal class NativeView(activity: Activity, context: Context, id: Int, creatio
             .setAudioMuted(audioMuted)
             .setVideoMuted(videoMuted)
             .setUserInfo(userInfo)
-            .setFeatureFlag("chat.enabled",false)
-            .setFeatureFlag("pip.enabled", false)
-            .setFeatureFlag("tile-view.enabled", true)
-            .setFeatureFlag("audio.mute.enabled", false)
-            .setFeatureFlag("overflow-menu.enabled", false)
 
+        if (featureFlags != null) {
+             for ((k, v) in featureFlags.iterator()) {
+                 optionsBuilder.setFeatureFlag(k,v)
+            }
+        }
 
         val options = optionsBuilder.build()
         val view = RNJitsiMeetView(activity)
