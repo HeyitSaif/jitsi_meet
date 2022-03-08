@@ -2,9 +2,13 @@ package com.gunschu.jitsi_meet
 
 import android.app.Activity
 import android.app.Fragment
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.util.Log
 import androidx.annotation.NonNull
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.gunschu.jitsi_meet.JitsiMeetPlugin.Companion.JITSI_PLUGIN_TAG
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
@@ -15,6 +19,7 @@ import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 import io.flutter.plugin.common.PluginRegistry.Registrar
+import org.jitsi.meet.sdk.BroadcastEvent
 import java.net.URL
 import org.jitsi.meet.sdk.JitsiMeetConferenceOptions
 import org.jitsi.meet.sdk.JitsiMeetUserInfo
@@ -41,6 +46,49 @@ public class JitsiMeetPlugin() : FlutterPlugin, MethodCallHandler, ActivityAware
     /**
      * FlutterPlugin interface implementations
      */
+    private val broadcastReceiver: BroadcastReceiver? = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            onBroadcastReceived(intent)
+        }
+    }
+
+    fun onConferenceWillJoin(data: HashMap<String, Any>) {
+        Log.d(JITSI_PLUGIN_TAG, String.format("JitsiMeetPluginActivity.onConferenceWillJoin: %s", data))
+        JitsiMeetEventStreamHandler.instance.onConferenceWillJoin(data)
+    }
+
+     fun onConferenceJoined(data: HashMap<String, Any>) {
+        Log.d(JITSI_PLUGIN_TAG, String.format("JitsiMeetPluginActivity.onConferenceJoined: %s", data))
+        JitsiMeetEventStreamHandler.instance.onConferenceJoined(data)
+    }
+
+     fun onConferenceTerminated(data: HashMap<String, Any>) {
+
+        Log.d(JITSI_PLUGIN_TAG, String.format("JitsiMeetPluginActivity.onConferenceTerminated: %s", data))
+        JitsiMeetEventStreamHandler.instance.onConferenceTerminated(data)
+    }
+    private fun onBroadcastReceived(intent: Intent?) {
+        if (intent != null) {
+            val event = BroadcastEvent(intent)
+            when (event.type) {
+                BroadcastEvent.Type.CONFERENCE_JOINED -> this.onConferenceJoined(event.data)
+                BroadcastEvent.Type.CONFERENCE_WILL_JOIN -> this.onConferenceWillJoin(event.data)
+                BroadcastEvent.Type.CONFERENCE_TERMINATED -> this.onConferenceTerminated(event.data)
+            }
+        }
+    }
+
+    private fun registerForBroadcastMessages() {
+        val intentFilter = IntentFilter()
+        val var2 = BroadcastEvent.Type.values()
+        val var3 = var2.size
+        for (var4 in 0 until var3) {
+            val type = var2[var4]
+            intentFilter.addAction(type.action)
+        }
+        this.activity?.let { LocalBroadcastManager.getInstance(it.applicationContext).registerReceiver(broadcastReceiver!!, intentFilter) }
+    }
+
     override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         Log.d(JITSI_PLUGIN_TAG, "Engine")
 
@@ -192,6 +240,7 @@ public class JitsiMeetPlugin() : FlutterPlugin, MethodCallHandler, ActivityAware
         pluginBinding
             .platformViewRegistry
             .registerViewFactory("jitsi", NativeViewFactory(binding.activity))
+        this.registerForBroadcastMessages()
     }
 
     override fun onDetachedFromActivityForConfigChanges() {

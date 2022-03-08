@@ -14,6 +14,7 @@ import org.jitsi.meet.sdk.ListenerUtils;
 import org.jitsi.meet.sdk.log.JitsiMeetLogger;
 
 import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.Map;
 
 
@@ -121,6 +122,7 @@ public class RNJitsiMeetView extends BaseReactView<JitsiMeetViewListener>
      */
     public void leave() {
         setProps(new Bundle());
+        JitsiMeetEventStreamHandler.Companion.getInstance().onConferenceTerminated(new HashMap<String, Object>());
     }
 
     /**
