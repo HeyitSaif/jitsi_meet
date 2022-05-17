@@ -1,5 +1,6 @@
 package com.gunschu.jitsi_meet
 
+import android.app.Activity
 import android.app.KeyguardManager
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -18,7 +19,7 @@ import org.jitsi.meet.sdk.JitsiMeetConferenceOptions
 /**
  * Activity extending JitsiMeetActivity in order to override the conference events
  */
-class JitsiMeetPluginActivity : JitsiMeetActivity() {
+class JitsiMeetPluginActivity<Activity> : JitsiMeetActivity() {
     companion object {
         @JvmStatic
         fun launchActivity(context: Context?,
