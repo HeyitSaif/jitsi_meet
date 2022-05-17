@@ -11,7 +11,7 @@ import java.net.URL
 import android.util.Log
 
 
-internal class NativeView(activity: Activity, context: Context, id: Int, creationParams: Map<String?, Any?>?) : PlatformView {
+internal class NativeView(activity: Activity, context: Context?, id: Int, creationParams: Map<String?, Any?>?) : PlatformView {
     private val jitsiView: RNJitsiMeetView
 
     override fun getView(): View {

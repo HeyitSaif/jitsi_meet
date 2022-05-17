@@ -10,6 +10,6 @@ import io.flutter.plugin.platform.PlatformViewFactory
 class NativeViewFactory(val activity: Activity) : PlatformViewFactory(StandardMessageCodec.INSTANCE) {
     override fun create(context: Context?, viewId: Int, args: Any?): PlatformView {
         val creationParams = args as Map<String?, Any?>?
-        return NativeView(activity, context!!, viewId, creationParams)
+        return NativeView(activity, context, viewId, creationParams)
     }
 }
