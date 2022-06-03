@@ -39,7 +39,7 @@ public class JitsiMeetPlugin() : FlutterPlugin, MethodCallHandler, ActivityAware
     private var activity: Activity? = null
     private lateinit var pluginBinding: FlutterPlugin.FlutterPluginBinding
 
-    constructor(activity: Activity) : this() {
+    constructor(activity: Activity?) : this() {
         this.activity = activity
     }
 
@@ -94,7 +94,6 @@ public class JitsiMeetPlugin() : FlutterPlugin, MethodCallHandler, ActivityAware
 
         pluginBinding = flutterPluginBinding;
 
-        flutterPluginBinding
 
         channel = MethodChannel(flutterPluginBinding.binaryMessenger, JITSI_METHOD_CHANNEL)
         channel.setMethodCallHandler(this)
